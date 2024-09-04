@@ -1,0 +1,22 @@
+cmake_minimum_required(VERSION 3.10)
+
+# Project name
+project(HenloCompiler)
+
+# Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# Include directories (where headers are located)
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
+# Add the executable (list all source files here)
+add_executable(HenloCompiler
+    src/ReservedToken.cpp
+    src/Parser.cpp
+    src/Lexer.cpp
+    src/main.cpp
+)
+
+# Optional: Add compiler warnings
+target_compile_options(HenloCompiler PRIVATE -Wall -Wextra -pedantic)
