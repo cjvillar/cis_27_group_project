@@ -56,6 +56,25 @@ compiler-group-project/
 └── README.md             # Project documentation
 ```
 
+## Flex -> Tokens (identifiers, keywords, nums, Parentheses):
+
+Flex input file: flexTokens.l
+
+\*Run after Bison step as you need to generate header file:
+Parser.hpp
+
+\*this file includes Parser.hpp created with bison.
+The code below will ouput lex.yy.cpp and flexTokens.yy.h
+
+in src/
+
+```bash
+# Generate .cpp file:
+flex --header-file=flexTokens.yy.h --outfile=lex.yy.cpp --c++ flexTokens.l
+
+```
+
+
 ## Contributing
 
 We welcome contributions from everyone. If you find any issues or have suggestions for improvements, please feel free to open an issue or submit a pull request.
