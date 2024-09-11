@@ -2,9 +2,10 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <optional>
 
 
-enum Tokens {
+enum TokenKind {
     NUMBER, // 0 note to self* enums auto assign values
     PLUS, // 1 
     MINUS,
@@ -16,6 +17,27 @@ enum Tokens {
     INVALID // 8 (invalid or unrecognized token)
 };
 
+class Token {
+  public:
+    Token() : kind(INVALID), val(std::nullopt) {}
+    Token(TokenKind kind) : kind(kind), val(std::nullopt) {}
+    Token(TokenKind kind, std::optional<int> val) : kind(kind), val(val) {}
+    TokenKind getKind() { return kind; }
+    std::optional<int> getVal() { return val; }
+  private:  
+    TokenKind kind;
+    std::optional<int> val;
+};
+
+// cout overrides for debugging
+std::ostream& operator<<(std::ostream& os, std::optional<int> val) {
+  if (val.has_value()) {
+    std::cout << val.value();
+  } else {
+    std::cout << "no value";
+  }
+  return os;
+}
 
 class Lexer {
  public:
@@ -25,7 +47,7 @@ class Lexer {
         currentChar(text.empty() ? '\0' : text[0]), // the '0/' = null character, end of string
         numberValue(0) {} // stores number 
 
-  Tokens getNextToken() { // returns next token
+  Token getNextToken() { // returns next token
     while (currentChar != '\0') { 
       if (std::isspace(static_cast<unsigned char>(currentChar))) {
         skipWhitespace(); // skips white space
@@ -34,36 +56,55 @@ class Lexer {
 
       if (std::isdigit(static_cast<unsigned char>(currentChar))) {
         numberValue = parseNumber();
-        return NUMBER;
+        Token t(NUMBER, numberValue);
+        return t;
       }
 
       switch (currentChar) {
-        case '+':
+        // Using add'l blocks in cases to create a scope that
+        // can initialize a token value and return it.
+        // Seems iffy maybe we can think of a better way.
+        case '+': {
           advance();
-          return PLUS;
-        case '-':
+          Token t(PLUS);
+          return t;
+        }
+        case '-': {
           advance();
-          return MINUS;
-        case '*':
+          Token t(MINUS);
+          return t;
+        }
+        case '*': {
           advance();
-          return MULTIPLY;
-        case '/':
+          Token t(MULTIPLY);
+          return t;
+        }
+        case '/': {
           advance();
-          return DIVIDE;
-        case '(':
+          Token t(DIVIDE);
+          return t;
+        }
+        case '(': {
           advance();
-          return LPAREN;
-        case ')':
+          Token t(LPAREN);
+          return t;
+        }
+        case ')': {
           advance();
-          return RPAREN;
-        default:
+          Token t(RPAREN);
+          return t;
+        }
+        default: {
           // handle invalid characters
           advance();  // skip invalid token but return invalid
-          return INVALID;
+          Token t(INVALID);
+          return t;
+        }
       }
     }
 
-    return END;
+    Token t(END);
+    return t;
   }
 
   // method to get a number value token lexer.getNumberValue()

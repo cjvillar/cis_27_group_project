@@ -9,31 +9,31 @@ int main() {
     std::string input = "12 + 24 - (3 * 4) / 06"; // should ignore leading 0
     Lexer lexer(input);
 
-    Tokens token;
-    while ((token = lexer.getNextToken()) != Tokens::END) {
-        switch (token) {
-            case Tokens::NUMBER:
-                std::cout << "NUMBER(" << lexer.getNumberValue() << ")\n";
+    Token token;
+    while ((token = lexer.getNextToken()).getKind() != TokenKind::END) {
+        switch (token.getKind()) {
+            case TokenKind::NUMBER:
+                std::cout << "NUMBER(" << token.getVal() << ")\n";
                 break;
-            case Tokens::PLUS:
+            case TokenKind::PLUS:
                 std::cout << "PLUS\n";
                 break;
-            case Tokens::MINUS:
+            case TokenKind::MINUS:
                 std::cout << "MINUS\n";
                 break;
-            case Tokens::MULTIPLY:
+            case TokenKind::MULTIPLY:
                 std::cout << "MULTIPLY\n";
                 break;
-            case Tokens::DIVIDE:
+            case TokenKind::DIVIDE:
                 std::cout << "DIVIDE\n";
                 break;
-            case Tokens::LPAREN:
+            case TokenKind::LPAREN:
                 std::cout << "LPAREN\n";
                 break;
-            case Tokens::RPAREN:
+            case TokenKind::RPAREN:
                 std::cout << "RPAREN\n";
                 break;
-            case Tokens::INVALID:
+            case TokenKind::INVALID:
                 std::cout << "INVALID\n";
                 break;
             default:
