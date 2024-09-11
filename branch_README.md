@@ -1,52 +1,14 @@
-# Test Branch Instructions
+## Lexer -> Tokens:
 
+Lexer.cpp: A lexer class to tokenize the following
+Operators: + , - , * , /
+Expressions: Numbers ([0-9.]+), Parentheses
+Keywords: None (Currently)
 
-Dir structure:
-```
-compiler/
-├── CMakeLists.txt
-├── llvm-project-llvmorg-18.1.8
-├── include/
-│   ├── ReservedToken.h
-│   ├── Lexer.h
-    ├── CodeGenerator.h
-│   ├── Parser.h
-│   └── config.h
-├── src/
-│   ├── main.cpp
-    ├── CodeGenerator.cpp
-│   ├── Lexer.cpp
-│   └── Parser.cpp
-└── example.henlo
+test:
+```bash
+clang++ -std=c++17 -o lexer_test test_lexer.cpp
 ```
 
-### LLVM:
-https://github.com/llvm/llvm-project/releases/tag/llvmorg-18.1.8
-
-
-### Compilation Instructions:
-1. **Navigate to compiler/**:
-    ```bash
-    cd /path/to/compiler
-    ```
-   
-2. **Create a build directory** (recommended):
-    ```bash
-    mkdir build && cd build
-    ```
-   
-3. **Run CMake**:
-    ```bash
-    cmake ..
-    ```
-   
-4. **Build the project**:
-    ```bash
-    make
-    ```
-
-5. **Run henlo compiler** on the `.henlo` file:
-    ```bash
-    ./HenloCompiler ../<file>.henlo
-    ```
-
+### sources:
+https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/LangImpl02.html
