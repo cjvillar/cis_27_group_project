@@ -71,7 +71,7 @@ class Lexer {
 
  private:
   std::string text;
-  size_t pos;
+  std::size_t pos;
   char currentChar;
   int numberValue;
 
