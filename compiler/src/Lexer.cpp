@@ -49,6 +49,7 @@ std::ostream& operator<<(std::ostream& os, const TokenKind& tokenKind) {
       os << "END";
       break;
   }
+  return os;
 }
 
 class Token {
