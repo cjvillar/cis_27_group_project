@@ -1,72 +1,87 @@
 #include <cctype>
 #include <iostream>
+#include <optional> //not curenty used
 #include <stdexcept>
 #include <string>
 
-
-enum Tokens {
-    NUMBER, // 0 note to self* enums auto assign values
-    PLUS, // 1 
-    MINUS,
-    MULTIPLY,
-    DIVIDE,
-    LPAREN,
-    RPAREN,
-    END, // 7 (end of the input)
-    INVALID // 8 (invalid or unrecognized token)
+// TokenType class to hold type and value
+// Enum classes strongly typed and strongly scoped
+enum class TokenType {
+  NUMBER,
+  PLUS,
+  MINUS,
+  MULTIPLY,
+  DIVIDE,
+  LPAREN,
+  RPAREN,
+  END,
+  INVALID
 };
 
+class Token {
+ public:
+  Token(TokenType type, const std::string& value = "")
+      // Token(TokenType type, std::optional<int> value = std::nullopt)
+      // retuns empty string by defalut, but many options here.
+      // I could not get <optional> to work on my end
+      : type(type), value(value) {}
+
+  TokenType getType() const { return type; }
+  std::string getValue() const { return value; }
+
+ private:
+  TokenType type;
+  std::string value;
+};
 
 class Lexer {
  public:
-  Lexer(const std::string& text) // constructor 
+  Lexer(const std::string& text)
       : text(text),
-        pos(0), // tracks curent pos of string
-        currentChar(text.empty() ? '\0' : text[0]), // the '0/' = null character, end of string
-        numberValue(0) {} // stores number 
+        pos(0),
+        currentChar(text.empty() ? '\0' : text[0]),
+        numberValue(0) {}
 
-  Tokens getNextToken() { // returns next token
-    while (currentChar != '\0') { 
+  Token getNextToken() {
+    while (currentChar != '\0') {
       if (std::isspace(static_cast<unsigned char>(currentChar))) {
-        skipWhitespace(); // skips white space
+        skipWhitespace();
         continue;
       }
 
       if (std::isdigit(static_cast<unsigned char>(currentChar))) {
         numberValue = parseNumber();
-        return NUMBER;
+        return Token(TokenType::NUMBER, std::to_string(numberValue));
       }
 
       switch (currentChar) {
         case '+':
           advance();
-          return PLUS;
+          return Token(TokenType::PLUS);
         case '-':
           advance();
-          return MINUS;
+          return Token(TokenType::MINUS);
         case '*':
           advance();
-          return MULTIPLY;
+          return Token(TokenType::MULTIPLY);
         case '/':
           advance();
-          return DIVIDE;
+          return Token(TokenType::DIVIDE);
         case '(':
           advance();
-          return LPAREN;
+          return Token(TokenType::LPAREN);
         case ')':
           advance();
-          return RPAREN;
+          return Token(TokenType::RPAREN);
         default:
-          // handle invalid characters
-          advance();  // skip invalid token but return invalid
-          return INVALID;
+          advance();
+          return Token(TokenType::INVALID);
       }
     }
 
-    return END;
+    return Token(TokenType::END);
   }
 
-  // method to get a number value token lexer.getNumberValue()
   int getNumberValue() const { return numberValue; }
 
  private:
@@ -75,8 +90,8 @@ class Lexer {
   char currentChar;
   int numberValue;
 
-  void advance() { //advance helper method to move through input string
-    pos++; 
+  void advance() { 
+    pos++;
     if (pos >= text.size()) {
       currentChar = '\0';
     } else {
@@ -84,14 +99,14 @@ class Lexer {
     }
   }
 
-  void skipWhitespace() { // method to skip white space
+  void skipWhitespace() {
     while (currentChar != '\0' &&
            std::isspace(static_cast<unsigned char>(currentChar))) {
       advance();
     }
   }
 
-  int parseNumber() { // Number: [0-9.]+
+  int parseNumber() {
     std::string numStr;
     while (currentChar != '\0' &&
            std::isdigit(static_cast<unsigned char>(currentChar))) {
