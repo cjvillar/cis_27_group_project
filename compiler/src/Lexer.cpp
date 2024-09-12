@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cctype>
 #include <iostream>
 #include <stdexcept>
@@ -22,8 +24,8 @@ class Token {
     Token() : kind(INVALID), val(std::nullopt) {}
     Token(TokenKind kind) : kind(kind), val(std::nullopt) {}
     Token(TokenKind kind, std::optional<int> val) : kind(kind), val(val) {}
-    TokenKind getKind() { return kind; }
-    std::optional<int> getVal() { return val; }
+    TokenKind getKind() const { return kind; }
+    std::optional<int> getVal() const { return val; }
   private:  
     TokenKind kind;
     std::optional<int> val;
@@ -56,55 +58,39 @@ class Lexer {
 
       if (std::isdigit(static_cast<unsigned char>(currentChar))) {
         numberValue = parseNumber();
-        Token t(NUMBER, numberValue);
-        return t;
+        return Token(NUMBER, numberValue);
       }
 
       switch (currentChar) {
         // Using add'l blocks in cases to create a scope that
         // can initialize a token value and return it.
         // Seems iffy maybe we can think of a better way.
-        case '+': {
+        case '+':
           advance();
-          Token t(PLUS);
-          return t;
-        }
-        case '-': {
+          return Token(PLUS);
+        case '-':
           advance();
-          Token t(MINUS);
-          return t;
-        }
-        case '*': {
+          return Token(MINUS);
+        case '*':
           advance();
-          Token t(MULTIPLY);
-          return t;
-        }
-        case '/': {
+          return Token(MULTIPLY);
+        case '/':
           advance();
-          Token t(DIVIDE);
-          return t;
-        }
-        case '(': {
+          return Token(DIVIDE);
+        case '(':
           advance();
-          Token t(LPAREN);
-          return t;
-        }
-        case ')': {
+          return Token(LPAREN);
+        case ')':
           advance();
-          Token t(RPAREN);
-          return t;
-        }
-        default: {
+          return Token(RPAREN);
+        default:
           // handle invalid characters
           advance();  // skip invalid token but return invalid
-          Token t(INVALID);
-          return t;
-        }
+          return Token(INVALID);
       }
     }
 
-    Token t(END);
-    return t;
+    return Token(END);
   }
 
   // method to get a number value token lexer.getNumberValue()
