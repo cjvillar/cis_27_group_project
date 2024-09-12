@@ -25,7 +25,7 @@ class Token {
     Token(TokenKind kind) : kind(kind), val(std::nullopt) {}
     Token(TokenKind kind, std::optional<int> val) : kind(kind), val(val) {}
     TokenKind getKind() const { return kind; }
-    std::optional<int> getVal() const { return val; }
+    std::optional<int> getValue() const { return val; }
   private:  
     TokenKind kind;
     std::optional<int> val;

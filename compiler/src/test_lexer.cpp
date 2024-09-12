@@ -13,7 +13,7 @@ int main() {
     while ((token = lexer.getNextToken()).getKind() != TokenKind::END) {
         switch (token.getKind()) {
             case TokenKind::NUMBER:
-                std::cout << "NUMBER(" << token.getVal() << ")\n";
+                std::cout << "NUMBER(" << token.getValue() << ")\n";
                 break;
             case TokenKind::PLUS:
                 std::cout << "PLUS\n";
