@@ -7,7 +7,7 @@
 #include <optional>
 
 
-enum TokenKind {
+enum class TokenKind {
     NUMBER, // 0 note to self* enums auto assign values
     PLUS, // 1 
     MINUS,
@@ -19,9 +19,41 @@ enum TokenKind {
     INVALID // 8 (invalid or unrecognized token)
 };
 
+std::ostream& operator<<(std::ostream& os, const TokenKind& tokenKind) {
+  switch(tokenKind) {
+    case TokenKind::NUMBER:
+      os << "NUMBER";
+      break; 
+    case TokenKind::PLUS:
+      os << "PLUS";
+      break;
+    case TokenKind::MINUS:
+      os << "MINUS";
+      break;
+    case TokenKind::MULTIPLY:
+      os << "MULTIPLY";
+      break;
+    case TokenKind::DIVIDE:
+      os << "DIVIDE";
+      break;
+    case TokenKind::LPAREN:
+      os << "LPAREN";
+      break;
+    case TokenKind::RPAREN:
+      os << "RPAREN";
+      break;
+    case TokenKind::INVALID:
+      os << "INVALID";
+      break;
+    case TokenKind::END:
+      os << "END";
+      break;
+  }
+}
+
 class Token {
   public:
-    Token() : kind(INVALID), val(std::nullopt) {}
+    Token() : kind(TokenKind::INVALID), val(std::nullopt) {}
     Token(TokenKind kind) : kind(kind), val(std::nullopt) {}
     Token(TokenKind kind, std::optional<int> val) : kind(kind), val(val) {}
     TokenKind getKind() const { return kind; }
@@ -58,36 +90,36 @@ class Lexer {
 
       if (std::isdigit(static_cast<unsigned char>(currentChar))) {
         numberValue = parseNumber();
-        return Token(NUMBER, numberValue);
+        return Token(TokenKind::NUMBER, numberValue);
       }
 
       switch (currentChar) {
         case '+':
           advance();
-          return Token(PLUS);
+          return Token(TokenKind::PLUS);
         case '-':
           advance();
-          return Token(MINUS);
+          return Token(TokenKind::MINUS);
         case '*':
           advance();
-          return Token(MULTIPLY);
+          return Token(TokenKind::MULTIPLY);
         case '/':
           advance();
-          return Token(DIVIDE);
+          return Token(TokenKind::DIVIDE);
         case '(':
           advance();
-          return Token(LPAREN);
+          return Token(TokenKind::LPAREN);
         case ')':
           advance();
-          return Token(RPAREN);
+          return Token(TokenKind::RPAREN);
         default:
           // handle invalid characters
           advance();  // skip invalid token but return invalid
-          return Token(INVALID);
+          return Token(TokenKind::INVALID);
       }
     }
 
-    return Token(END);
+    return Token(TokenKind::END);
   }
 
   // method to get a number value token lexer.getNumberValue()
