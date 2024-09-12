@@ -62,9 +62,6 @@ class Lexer {
       }
 
       switch (currentChar) {
-        // Using add'l blocks in cases to create a scope that
-        // can initialize a token value and return it.
-        // Seems iffy maybe we can think of a better way.
         case '+':
           advance();
           return Token(PLUS);
