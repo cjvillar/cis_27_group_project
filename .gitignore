@@ -1,5 +1,5 @@
 # vscode config
-.vscode
+.vscode/
 
 # Compiled Static libraries
 *.lai
