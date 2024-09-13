@@ -1,4 +1,5 @@
-
+# vscode config
+.vscode
 
 # Compiled Static libraries
 *.lai
@@ -13,7 +14,6 @@
 
 #cmake
 build/
-
 
 #llvm
 compiler/llvm-project-llvmorg-18.1.8/
