@@ -26,6 +26,12 @@ and pointers to two child nodes of abstract type `ExprAST`.
 `parser_test.cpp` contains a few sample strings. The first two should succeed and pretty-print
 and AST to console, and the last should fail. 
 
+Please note that ASTs are printed with the method `print("")`, which requires the empty string
+argument to format correctly. This is because it is called recursively with increasing indent levels
+for the children of `BinOpExpr` nodes. It is separate from `operator<<` because I haven't yet figured out
+how to get the overrides for the concrete child classes to work when called on the abstract parent class
+`ExprAST`.
+
 test:
 ```bash
 clang++ -std=c++17 -o parser_test parser_test.cpp
