@@ -3,6 +3,16 @@
 #include <memory>
 #include "Lexer.h"
 
+class ExprAST;
+class NumExprAST;
+class BinOpExprAST;
+
+class ASTVisitor {
+  public:
+    virtual void visit(NumExprAST& numExprAST) = 0;
+    virtual void visit(BinOpExprAST& binOpExerAST) = 0;
+  private:
+};
 
 class ExprAST {
   public:
@@ -14,7 +24,7 @@ class ExprAST {
     // to get the right indentation levels. This is because it is applied 
     // recursively to the children of `BinOpExprAST`.
     virtual void print(std::string indent) = 0;
-    
+    virtual void accept(ASTVisitor& irGen) = 0;
 };
 
 class NumExprAST : public ExprAST {
@@ -29,6 +39,9 @@ class NumExprAST : public ExprAST {
 
     int getValue() const { return value; }
     void print(std::string indent) override { std::cout << getValue() << "\n"; }
+    void accept(ASTVisitor& irGen) {
+      irGen.visit(*this);
+    }
 
   private:
     int value;
@@ -41,6 +54,9 @@ class BinOpExprAST : public ExprAST {
 
     TokenKind getKind() const { return kind; }
 
+    std::unique_ptr<ExprAST> getLeft() { return std::move(left); }
+    std::unique_ptr<ExprAST> getRight() { return std::move(right); }
+
     void print(std::string indent) override {
       std::cout << "+" << getKind() << "\n";
       std::cout << indent << "|---";
@@ -48,7 +64,11 @@ class BinOpExprAST : public ExprAST {
       std::cout << indent << "|---";
       right->print("    " + indent);
     }
-    
+
+    void accept(ASTVisitor& irGen) {
+      irGen.visit(*this);
+    }
+
   private:
     TokenKind kind;
     std::unique_ptr<ExprAST> left, right;
