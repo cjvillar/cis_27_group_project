@@ -15,3 +15,4 @@
 #include "AST.h"
 #include "Lexer.h"
 #include "Parser.h"
+#include "IRGenVisitor.h"
