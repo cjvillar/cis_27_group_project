@@ -14,7 +14,15 @@ add_executable(Compiler
     Lexer.cpp 
     Parser.cpp
     IRGenVisitor.cpp 
+    main.cpp
 )
+
+# Disable run-time type information.
+# I think this is needed because my binaries are
+# built without it. Otherwise generates ld typeinfo error.
+# see https://discourse.llvm.org/t/undefined-reference-to-typeinfo-for-llvm-genericoptionvalue/71526/3
+set(NO_RTTI "-fno-rtti")
+add_definitions(${NO_RTTI})
 
 llvm_map_components_to_libnames(llvm_libs support core irreader)
 target_include_directories(Compiler PUBLIC ${LLVM_INCLUDE_DIRS})
