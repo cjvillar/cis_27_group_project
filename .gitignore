@@ -1,6 +1,9 @@
 # vscode config
 .vscode/
 
+# cached info from clangd
+.cache/
+
 # Compiled Static libraries
 *.lai
 *.la
