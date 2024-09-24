@@ -9,6 +9,7 @@ class BinOpExprAST;
 
 class ASTVisitor {
 public:
+  virtual void visit(ExprAST& exprAST) = 0;
   virtual void visit(NumExprAST &numExprAST) = 0;
   virtual void visit(BinOpExprAST &binOpExerAST) = 0;
 
@@ -25,7 +26,7 @@ public:
   // to get the right indentation levels. This is because it is applied
   // recursively to the children of `BinOpExprAST`.
   virtual void print(std::string indent) = 0;
-  virtual void accept(ASTVisitor &irGen) = 0;
+  virtual void accept(ASTVisitor& irGen) {}
 };
 
 class NumExprAST : public ExprAST {
