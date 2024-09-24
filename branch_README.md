@@ -19,7 +19,10 @@ clang++ -std=c++17 -o parser_test parser_test.cpp Parser.cpp Lexer.cpp
 
 ### sources:
 
+Most of the driver code is cobbled together from these two sources, with some modifications:
+
 https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/LangImpl02.html
+https://github.com/PacktPublishing/Learn-LLVM-17/tree/main/Chapter02
 
 ## Tokens -> ASTs:
 
@@ -45,3 +48,35 @@ test:
 ```bash
 clang++ -std=c++17 -o parser_test parser_test.cpp
 ```
+
+## Compiler
+In its current state, we have main.cpp as the driver for the compilation phase. It takes one argument string on invocation and prints LLVM
+IR to stdout, evaluating arithmetic expressions to a single value and outputting the basic block for @main, which has a call to @write. 
+
+Example usage:
+
+```bash
+/cis_27_group_project/compiler/src$ cmake -S. -B ../build
+/cis_27_group_project/compiler/build$ make
+```
+
+```bash
+./Compiler "(5 + (10 * 7))"
+```
+
+output:
+
+```
+; ModuleID = 'arithmetic'
+source_filename = "arithmetic"
+
+define i32 @main(i32 %0) {
+entry:
+  call void @write_fn(i32 75)
+  ret i32 0
+}
+
+declare void @write_fn(i32)
+```
+
+Note: I don't fully understand the `run` method of class `IRGenVisitor` yet. It comes pretty much verbatim from "Learn LLVM 17" so I'll have to read more to understand how to modify it. 
