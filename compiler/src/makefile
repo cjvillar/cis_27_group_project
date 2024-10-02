@@ -6,6 +6,7 @@ CXXFLAGS = -std=c++17  # flags
 SRCS = parser_test.cpp Parser.cpp Lexer.cpp # source files
 TARGET = parser_test # executable name
 
+# target 
 all: $(TARGET)
 
 # link
