@@ -12,6 +12,11 @@ class Parser {
  private:
   Lexer lexer;
   std::stack<Token> operatorStack;
-  std::vector<std::unique_ptr<ExprAST>> partialParse;
+  std::vector<std::unique_ptr<ExprAST> > partialParse;
   std::unique_ptr<ExprAST> result;
+
+  void handleNumber(const Token& token);
+  void handleOperator(const Token& token);
+  void handleRightParenthesis();
+  void validateResult();
 };

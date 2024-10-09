@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Lexer.h"
-#include <memory>
+#include "config.h"
 
 class ExprAST;
 class NumExprAST;

@@ -1,9 +1,5 @@
 #include "config.h"
 
-#include "llvm/IR/IRBuilder.h"
-#include "llvm/IR/LLVMContext.h"
-#include "llvm/IR/BasicBlock.h"
-
 
 IRGenVisitor::IRGenVisitor(llvm::Module* module) : 
   module(module), builder(module->getContext()) {
@@ -38,7 +34,9 @@ void IRGenVisitor::run(std::unique_ptr<ExprAST>& exprAST) {
   );
   // Currently VSCode intellisense reports argument type mismatch,
   // but no compilation errors have been detected.
-  builder.CreateCall(WriteFnTy, WriteFn, {value});
+
+  //builder.CreateCall(WriteFnTy, WriteFn, {value});
+  builder.CreateCall(WriteFn, {value});
   builder.CreateRet((llvm::Value*)Int32Zero);
 }
 

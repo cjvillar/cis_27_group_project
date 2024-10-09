@@ -64,6 +64,11 @@ Example usage:
 ./Compiler "(5 + (10 * 7))"
 ```
 
+Now from src run
+```bash
+./../build/Compiler infile.txt 
+```
+
 output:
 
 ```
